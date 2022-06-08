@@ -1,1 +1,103 @@
+---
+- 
+  hosts: all
+  gather_facts: yes
 
+- 
+  hosts: HAproxy
+  gather_facts: yes
+  
+  tasks:
+  
+    - name: update cache
+      apt:
+        update_cache: true
+      become: true 
+        
+    - name: installing HAproxy
+      apt:
+        name: haproxy
+        state: latest
+
+    - name: deploying haproxy configuration
+      template:
+        src: ./haproxy.j2
+        dest: /etc/haproxy/haproxy.cfg
+      notify: Start HAproxy
+  
+    - name: restarting HAproxy
+      service:
+        name: haproxy
+        state: restarted
+  
+    - name: installing Nginx
+      apt:
+        name: nginx
+        state: latest
+       
+    - name: Configuring UDP loadbalancing  
+      template:
+        src: ./nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+
+    - name: restarting nginx
+      service:
+         name: nginx
+         state: restarted
+
+  handlers:
+    - name: Start HAproxy
+      service:
+        name: haproxy
+        state: restarted
+           
+- 
+  hosts: webservers
+  become: yes
+  
+  tasks:
+
+    - name: update cache
+      apt:
+        update_cache: true
+      become: true
+
+    - name: install pip
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: true
+
+    - name: install gunicorn
+      apt:
+        name: gunicorn
+
+    - name: install flask
+      apt:
+        name: python3-flask
+        state: latest
+
+    - name: install snmpd
+      apt:
+        name: snmpd
+        state: latest
+
+    - name: Configure snmpd
+      template:
+        src: ./snmpd.conf
+        dest: /etc/snmp/snmpd.conf
+    
+    - name: restart snmpd
+      service:
+        name: snmpd
+        state: restarted
+
+    - name: copy the code
+      copy:
+        src: application2.py
+        dest: ./application2.py
+        owner: ubuntu
+        mode: '0644'
+
+    - name: Run Flask app
+      shell: gunicorn -w 2 -D -b 0.0.0.0:8080 application2:app

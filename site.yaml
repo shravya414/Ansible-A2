@@ -1,5 +1,5 @@
 ---
--  
+- 
   hosts: webservers
   gather_facts: yes
 - 
@@ -9,21 +9,22 @@
   tasks:
   
     - name: update cache
+      become: true
       apt:
         update_cache: true
-      become: true 
-        
-    - name: installing HAproxy
+
+    - name: install haproxy
+      become: true
       apt:
         name: haproxy
         state: latest
 
-    - name: deploying haproxy configuration
+    - name: deploy haproxy configuration
       template:
         src: ./haproxy.cfg.j2
         dest: /etc/haproxy/haproxy.cfg
-  
-    - name: restarting HAproxy
+
+    - name: restarting Haproxy
       service:
         name: haproxy
         state: restarted

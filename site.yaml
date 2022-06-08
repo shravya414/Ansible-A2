@@ -21,8 +21,8 @@
 
     - name: deploy haproxy configuration
       template:
-        src: ./haproxy.cfg.j2
-        dest: /etc/haproxy/haproxy.cfg
+        src: "./haproxy.cfg.j2"
+        dest: "/etc/haproxy/haproxy.cfg"
 
     - name: restarting Haproxy
       service:
@@ -36,8 +36,8 @@
        
     - name: Configuring nginx for UDP loadbalancing  
       template:
-        src: ./nginx.conf.j2
-        dest: /etc/nginx/nginx.conf
+        src: "./nginx.conf.j2"
+        dest: "/etc/nginx/nginx.conf"
 
     - name: restarting nginx
       service:
@@ -79,8 +79,8 @@
 
     - name: Configure snmpd
       template:
-        src: ./snmpd.conf
-        dest: /etc/snmp/snmpd.conf
+        src: "./snmpd.conf"
+        dest: "/etc/snmp/snmpd.conf"
     
     - name: restart snmpd
       service:

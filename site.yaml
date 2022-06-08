@@ -23,14 +23,13 @@
       template:
         src: ./haproxy.j2
         dest: /etc/haproxy/haproxy.cfg
-      notify: Start HAproxy
   
     - name: restarting HAproxy
       service:
         name: haproxy
         state: restarted
   
-    - name: installing Nginx
+    - name: installing Nginx for udp services
       apt:
         name: nginx
         state: latest
@@ -44,12 +43,6 @@
       service:
          name: nginx
          state: restarted
-
-  handlers:
-    - name: Start HAproxy
-      service:
-        name: haproxy
-        state: restarted
            
 - 
   hosts: webservers
@@ -68,14 +61,15 @@
         state: present
         update_cache: true
 
-    - name: install gunicorn
-      apt:
-        name: gunicorn
-
     - name: install flask
       apt:
         name: python3-flask
         state: latest
+     
+    - name: install gunicorn
+      apt:
+        name: gunicorn
+        state : present
 
     - name: install snmpd
       apt:

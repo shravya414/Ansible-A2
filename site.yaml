@@ -65,25 +65,20 @@
     - name: update apt cache
       become: true
       apt:
-           update_cache: true
+        update_cache: true
 
     - name: install haproxy
       become: true
       apt:
-           name: haproxy
-           state: latest
+        name: haproxy
+        state: latest
 
     - name: deploy new haproxy configuration
       template:
-           src: /$PWD/haproxy.cfg.j2
-           dest: "/etc/haproxy/haproxy.cfg"
+        src: /$PWD/haproxy.cfg.j2
+        dest: "/etc/haproxy/haproxy.cfg"
 
     - name: Haproxy restart
-      service:
-           name: haproxy
-           state: restarted
-           
-    - name: restarting Haproxy
       service:
         name: haproxy
         state: restarted

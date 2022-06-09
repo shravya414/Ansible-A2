@@ -1,4 +1,4 @@
-Host BastionNSO
+Host bastionET2598
     Hostname <ip address>
     user ubuntu
     IdentityFile ~/.ssh/id_rsa
@@ -13,25 +13,25 @@ Host HAproxy
     user ubuntu
     IdentityFile ~/.ssh/id_rsa
     StrictHostKeyChecking no
-    ProxyCommand ssh -W %h:%p BastionNSO
+    ProxyCommand ssh -W %h:%p bastionET2598
 
 Host devA
     Hostname <ip address>
     user ubuntu
     IdentityFile ~/.ssh/id_rsa
     StrictHostKeyChecking no
-    ProxyCommand ssh -W %h:%p BastionNSO
+    ProxyCommand ssh -W %h:%p bastionET2598
 
 Host devB
     Hostname <ip address>
     user ubuntu
     IdentityFile ~/.ssh/id_rsa
     StrictHostKeyChecking no
-    ProxyCommand ssh -W %h:%p BastionNSO
+    ProxyCommand ssh -W %h:%p bastionET2598
 
 Host devC
     Hostname <ip address>
     user ubuntu
     IdentityFile ~/.ssh/id_rsa
     StrictHostKeyChecking no
-    ProxyCommand ssh -W %h:%p BastionNSO
+    ProxyCommand ssh -W %h:%p bastionET2598
